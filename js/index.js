@@ -2,28 +2,20 @@ class ProductList {
   constructor() {
     this._list = [];
   }
-  find(productId, name = null, price = null) {
-    this._list.find((item) => {
-      for (const key in item) {
-      }
-      if (item.id === productId) {
-        console.log(item);
-        return item;
-      }
-      return -1;
-    });
+  findIndexById(productId) {
+    return this._list.findIndex((item) => item.id === productId);
   }
-  sort() {}
   push(product) {
     this._list.push(product);
   }
 }
 
 class Product {
-  constructor(id, name, price) {
+  constructor(id, name, price, category) {
     this.id = id;
     this.name = name;
     this.price = price;
+    this.category = category;
   }
 }
 
@@ -51,15 +43,17 @@ const productContainer = document.querySelector(".products-box");
 productContainer
   .querySelectorAll(".product-box__item")
   .forEach((item, index) => {
-    const title = item.querySelector(".product-box__title");
-    const price = item.querySelector("p");
-    const product = new Product(index, title, price);
+    const title = item.querySelector(".product-box__title").innerHTML;
+    const price = item.querySelector("p").innerHTML;
+    const category = item.querySelector(".product-box__btn").dataset
+      .productCategory;
+    const product = new Product(index, title, price, category);
     productsList.push(product);
   });
 
 productContainer.addEventListener("click", function (event) {
-  console.log("1");
-  productsList.find(event.target.dataset.productId);
+  let index = productsList.findIndexById(+event.target.dataset.productId);
+  // console.log(productsList._list[index]);
 });
 
 console.log(productsList);
